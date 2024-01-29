@@ -2,7 +2,6 @@ import static org.mockito.Mockito.when;
 
 import com.example.Feline;
 import com.example.LionAlex;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,15 +19,9 @@ public class LionAlexTest {
    * Проверка списка друзей
    */
   @Test
-  public void whenGetFriendsThenGetList() {
+  public void whenGetFriendsThenGetList() throws Exception {
     List<String> expectedFriends = List.of("Марти", "Глория", "Мелман");
-    LionAlex lionAlex = null;
-    try {
-      lionAlex = new LionAlex(feline);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    assert lionAlex != null;
+    LionAlex lionAlex = new LionAlex(feline);
     List<String> actualFriends = lionAlex.getFriends();
     Assert.assertEquals("Ожидаемые друзья льва Алекса: " + expectedFriends + " , но пришло: " +
         actualFriends, expectedFriends, actualFriends);
@@ -38,10 +31,9 @@ public class LionAlexTest {
    * Проверка количества друзей
    */
   @Test
-  public void getFriendsCountEqual3() {
+  public void getFriendsCountEqual3() throws Exception {
     int expectedSize = 3;
-    LionAlex lionAlex = createLionAlex();
-    assert lionAlex != null;
+    LionAlex lionAlex = new LionAlex(feline);
     int result = lionAlex.getFriends().size();
     Assert.assertEquals("Список друзей равен " + result, expectedSize, result);
   }
@@ -50,10 +42,9 @@ public class LionAlexTest {
    * Проверка места жительства
    */
   @Test
-  public void whenGetPlaceOfLivingThenGet() {
+  public void whenGetPlaceOfLivingThenGet() throws Exception {
     String expectedPlace = "Нью-Йоркский зоопарк";
-    LionAlex lionAlex = createLionAlex();
-    assert lionAlex != null;
+    LionAlex lionAlex = new LionAlex(feline);
     String actualPlace = lionAlex.getPlaceOfLiving();
     Assert.assertEquals("Метод getPlaceOfLiving вернул: " + actualPlace + " , ожидалось: " +
         expectedPlace, expectedPlace, actualPlace);
@@ -63,10 +54,9 @@ public class LionAlexTest {
    * Проверка количества детей
    */
   @Test
-  public void whenGetKittensExpected0() {
+  public void whenGetKittensExpected0() throws Exception {
     int expectedKitten = 0;
-    LionAlex lionAlex = createLionAlex();
-    assert lionAlex != null;
+    LionAlex lionAlex = new LionAlex(feline);
     int result = lionAlex.getKittens();
     Assert.assertEquals("Метод getKittens вернул: " + result + " , ожидалось: " +
         expectedKitten, expectedKitten, result);
@@ -76,8 +66,8 @@ public class LionAlexTest {
    * Тест наличия гривы
    */
   @Test
-  public void whenDoesHaveManeThenReturnTrue() {
-    LionAlex lionAlex = createLionAlex();
+  public void whenDoesHaveManeThenReturnTrue() throws Exception {
+    LionAlex lionAlex = new LionAlex(feline);
     boolean expected = true;
     boolean result = lionAlex.doesHaveMane();
     Assert.assertEquals(expected, result);
@@ -87,26 +77,10 @@ public class LionAlexTest {
    * При вызове getFood() ожидаем "Животные", "Птицы", "Рыба"
    */
   @Test
-  public void whenGetFoodThenReturnList() {
+  public void whenGetFoodThenReturnList() throws Exception {
     List<String> expectedFood = List.of("Животные", "Птицы", "Рыба");
-    List<String> result = new ArrayList<>();
-    try {
-      LionAlex lionAlex = new LionAlex(feline);
-      when(feline.getFood("Хищник")).thenReturn(expectedFood);
-      result = lionAlex.getFood();
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    Assert.assertEquals(expectedFood, result);
-  }
-
-  private LionAlex createLionAlex() {
-    LionAlex lionAlex = null;
-    try {
-      lionAlex = new LionAlex(feline);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    return lionAlex;
+    LionAlex lionAlex = new LionAlex(feline);
+    when(feline.getFood("Хищник")).thenReturn(expectedFood);
+    Assert.assertEquals(expectedFood, lionAlex.getFood());
   }
 }

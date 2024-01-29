@@ -1,7 +1,8 @@
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.example.Feline;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,17 +21,10 @@ public class FelineTest {
    * При вызове метода eatMeat(), ожидается список из "Животные", "Птицы", "Рыба"
    */
   @Test
-  public void whenEatMeatThenReturnCorrectFood() {
+  public void whenEatMeatThenReturnCorrectFood() throws Exception {
     List<String> expectedMeat = List.of("Животные", "Птицы", "Рыба");
-    List<String> result = new ArrayList<>();
-    try {
-      when(feline.eatMeat()).thenReturn(expectedMeat);
-      result = feline.eatMeat();
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    Assert.assertEquals("Кошачьи хищники, едят " + expectedMeat + " . Вернулось: " + result,
-        expectedMeat, result);
+    when(feline.eatMeat()).thenReturn(expectedMeat);
+    Assert.assertEquals(expectedMeat, feline.eatMeat());
   }
 
   /**
@@ -65,45 +59,32 @@ public class FelineTest {
    * При вызове метода getFood("Хищник"), ожидается список из "Животные", "Птицы", "Рыба"
    */
   @Test
-  public void whenGetFoodWithPredatorParamThenEqualList() {
+  public void whenGetFoodWithPredatorParamThenEqualList() throws Exception {
     List<String> expectedMeat = List.of("Животные", "Птицы", "Рыба");
-    List<String> actualMeat = new ArrayList<>();
-    try {
-      when(feline.getFood("Хищник")).thenReturn(expectedMeat);
-      actualMeat = feline.getFood("Хищник");
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    Assert.assertEquals("Кошачьи хищники, едят " + expectedMeat + " . Вернулось: " + actualMeat,
-        expectedMeat, actualMeat);
+    when(feline.getFood("Хищник")).thenReturn(expectedMeat);
+    Assert.assertEquals(expectedMeat, feline.getFood("Хищник"));
   }
 
   /**
    * Проверка несоответствия списка еды Хищника и списка еды Травоядного
    */
   @Test
-  public void whenGetFoodWithHerbivoreParamThenNotEqualList() {
+  public void whenGetFoodWithHerbivoreParamThenNotEqualList() throws Exception {
     List<String> predatorFood = List.of("Животные", "Птицы", "Рыба");
     List<String> herbivoreFood = List.of("Трава", "Различные растения");
-    List<String> result = new ArrayList<>();
-    try {
-      when(feline.getFood("Травоядное")).thenReturn(herbivoreFood);
-      result = feline.getFood("Травоядное");
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    Assert.assertNotEquals("Список еды хищника: " + predatorFood + " совпадает со списком "
-        + "травоядного: " + result, predatorFood, result);
+    when(feline.getFood("Травоядное")).thenReturn(herbivoreFood);
+    Assert.assertNotEquals(predatorFood, feline.getFood("Травоядное"));
   }
 
   /**
    * Ожидается Exception.class при получении списка еды с параметром отличным от "Хищник" или
-   * "Травоядное"
+   * "Травоядное". А также проверка сообщения полученного Exception
    */
-  @Test(expected = Exception.class)
-  public void whenGetFoodWithWrongParamThenException() throws Exception {
-    when(feline.getFood("Вегетарианец")).thenThrow(Exception.class);
-    feline.getFood("Вегетарианец");
+  @Test
+  public void whenGetFoodWithWrongParamThenException() {
+    Exception thrown = assertThrows(Exception.class, () -> feline.getFood("Вегетарианец"));
+    assertEquals("Неизвестный вид животного, используйте значение Травоядное или Хищник",
+        thrown.getMessage());
   }
 
   /**

@@ -2,7 +2,6 @@ import static org.mockito.Mockito.when;
 
 import com.example.Cat;
 import com.example.Feline;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
@@ -29,17 +28,11 @@ public class CatTest {
    * Тест проверят рацион, получаемый при вызове getFood()
    */
   @Test
-  public void whenCatGetFoodThenGetList() {
+  public void whenCatGetFoodThenGetList() throws Exception {
     List<String> expectedFood = List.of("Животные", "Птицы", "Рыба");
-    List<String> result = new ArrayList<>();
     Cat cat = new Cat(feline);
-    try {
-      when(feline.eatMeat()).thenReturn(expectedFood);
-      result = cat.getFood();
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-    Assert.assertEquals(expectedFood, result);
+    when(feline.eatMeat()).thenReturn(expectedFood);
+    Assert.assertEquals(expectedFood, cat.getFood());
   }
 
 }

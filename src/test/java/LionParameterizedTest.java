@@ -38,16 +38,9 @@ public class LionParameterizedTest {
    * Проверка на наличие гривы у Lion в зависимости от пола
    */
   @Test
-  public void whenSexEqualMaleThenHasMane() {
-    Lion lion;
-    boolean result = false;
-    try {
-      lion = new Lion(feline, sex);
-      result = lion.doesHaveMane();
-    } catch (Exception ex) {
-      System.out.println(ex.getMessage());
-    }
+  public void whenSexEqualMaleThenHasMane() throws Exception {
+    Lion lion = new Lion(feline, sex);
     Assert.assertEquals("У " + sex + " ожидается наличие гривы = " + hasMane,
-        hasMane, result);
+        hasMane, lion.doesHaveMane());
   }
 }
